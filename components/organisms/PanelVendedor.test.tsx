@@ -19,30 +19,23 @@ if (typeof window !== 'undefined' && !('getComputedStyle' in window)) {
 }
 
 import { vi } from 'vitest';
-// Mock minimal antd primitives to avoid responsiveObserver / matchMedia issues
+// Mock antd primitives, including List.Item and List.Item.Meta, to match component usage
 vi.mock('antd', async () => {
   const React = await import('react');
-  // Basic List component that calls renderItem for each dataSource entry
-  const List: any = (props: any) => React.createElement(
-    'div',
-    null,
-    props.dataSource?.map((item: any, i: number) =>
-      React.createElement(
-        'div',
-        { key: i },
-        typeof props.renderItem === 'function' ? props.renderItem(item) : null
-      )
-    )
+  const List = (props: any) => React.createElement('div', { 'data-testid': 'mock-list' }, props.dataSource?.map((item: any, i: number) => (typeof props.renderItem === 'function' ? props.renderItem(item) : null)));
+  // Provide List.Item and List.Item.Meta under List namespace
+  // List.Item: simple container that renders children and optional actions
+  // List.Item.Meta: renders title and description
+  // @ts-ignore
+  List.Item = ({ children, actions }: any) => React.createElement('div', { 'data-testid': 'mock-list-item' },
+    React.createElement('div', null, children),
+    actions ? React.createElement('div', { 'data-testid': 'mock-list-item-actions' }, actions) : null
   );
-  // Provide List.Item and List.Item.Meta to match usage in component
-  List.Item = ({ children }: any) => React.createElement('div', null, children);
-  List.Item.Meta = ({ title, description }: any) =>
-    React.createElement(
-      'div',
-      null,
-      React.createElement('span', null, title),
-      React.createElement('span', null, description)
-    );
+  // @ts-ignore
+  List.Item.Meta = ({ title, description }: any) => React.createElement('div', { 'data-testid': 'mock-list-item-meta' },
+    title ? React.createElement('div', null, title) : null,
+    description ? React.createElement('div', null, description) : null
+  );
 
   const Typography = { Title: ({ children, level }: any) => React.createElement(`h${level || 1}`, null, children) };
   const Divider = () => React.createElement('hr', null);
@@ -63,7 +56,9 @@ test('PanelVendedor component test - shows total and calls alPagar', () => {
   render(<PanelVendedor carrito={carrito} total={total} alEliminarItem={alEliminarItem} alPagar={alPagar} />);
 
   expect(screen.getByText(/Total:/i)).toBeInTheDocument();
-  expect(screen.getAllByText(`$${total}`).length).toBeGreaterThan(0);
+  // Use getAllByText in case multiple occurrences of the same total appear
+  const totals = screen.getAllByText(`$${total}`);
+  expect(totals.length).toBeGreaterThan(0);
 
   const boton = screen.getByRole('button', { name: /Realizar Pago/i });
   fireEvent.click(boton);
