@@ -9,7 +9,6 @@ const { Header, Content, Footer } = Layout;
 const LayoutPrincipal = ({ children, rol }) => {
   const navigate = useNavigate();
 
-  // Definir elementos del menú según el rol
   const itemsMenu = [];
   if (rol === 'admin') {
     itemsMenu.push({ key: '1', icon: <UserOutlined />, label: 'Administración' });

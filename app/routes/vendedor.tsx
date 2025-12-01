@@ -3,10 +3,10 @@ import { Row, Col, message } from 'antd';
 import { useNavigate } from 'react-router';
 
 // Imports de componentes
-import LayoutPrincipal from '../components/layouts/LayoutPrincipal';
-import BarraBusqueda from '../components/molecules/BarraBusqueda';
-import TarjetaProducto from '../components/molecules/TarjetaProducto';
-import PanelVendedor from '../components/organisms/PanelVendedor';
+import LayoutPrincipal from '../../components/layouts/LayoutPrincipal';
+import BarraBusqueda from '../../components/molecules/BarraBusqueda';
+import TarjetaProducto from '../../components/molecules/TarjetaProducto';
+import PanelVendedor from '../../components/organisms/PanelVendedor';
 
 // Datos Mock
 const PRODUCTOS_MOCK = [

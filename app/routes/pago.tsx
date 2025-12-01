@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Card, Radio, Form, Input, Result } from 'antd';
-import LayoutPrincipal from '../components/layouts/LayoutPrincipal';
-import Boton from '../components/atoms/Boton';
+import LayoutPrincipal from '../../components/layouts/LayoutPrincipal';
+import Boton from '../../components/atoms/Boton';
 
 export default function Pago() {
   const location = useLocation();

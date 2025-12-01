@@ -3,9 +3,9 @@ import { message, Modal, Form, Input, InputNumber } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 // IMPORTANTE: Ajusta estas rutas si tus carpetas tienen nombres distintos
-import LayoutPrincipal from '../components/layouts/LayoutPrincipal';
-import TablaAdminProductos from '../components/organisms/TablaAdminProductos';
-import Boton from '../components/atoms/Boton';
+import LayoutPrincipal from '../../components/layouts/LayoutPrincipal';
+import TablaAdminProductos from '../../components/organisms/TablaAdminProductos';
+import Boton from '../../components/atoms/Boton';
 
 // Datos Mock (Simulación BD)
 const DATOS_INICIALES = [
@@ -36,7 +36,7 @@ export default function Admin() {
   return (
     <LayoutPrincipal rol="admin">
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
-        <h1>Gestión de Inventario (CRUD)</h1>
+        <h1>Gestión de Inventario</h1>
         <Boton 
           texto="Nuevo Producto" 
           tipo="primary" 

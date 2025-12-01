@@ -9,7 +9,8 @@ const Boton = ({
   peligro, 
   htmlType, 
   block, 
-  size 
+  size,
+  style
 }) => (
   <Button 
     type={tipo} 
@@ -19,6 +20,7 @@ const Boton = ({
     htmlType={htmlType}
     block={block}
     size={size}
+    style={style}
   >
     {texto}
   </Button>
