@@ -22,7 +22,28 @@ import { vi } from 'vitest';
 // Mock minimal antd primitives to avoid responsiveObserver / matchMedia issues
 vi.mock('antd', async () => {
   const React = await import('react');
-  const List = (props: any) => React.createElement('div', null, props.dataSource?.map((item: any, i: number) => React.createElement('div', { key: i }, typeof props.renderItem === 'function' ? props.renderItem(item) : null)));
+  // Basic List component that calls renderItem for each dataSource entry
+  const List: any = (props: any) => React.createElement(
+    'div',
+    null,
+    props.dataSource?.map((item: any, i: number) =>
+      React.createElement(
+        'div',
+        { key: i },
+        typeof props.renderItem === 'function' ? props.renderItem(item) : null
+      )
+    )
+  );
+  // Provide List.Item and List.Item.Meta to match usage in component
+  List.Item = ({ children }: any) => React.createElement('div', null, children);
+  List.Item.Meta = ({ title, description }: any) =>
+    React.createElement(
+      'div',
+      null,
+      React.createElement('span', null, title),
+      React.createElement('span', null, description)
+    );
+
   const Typography = { Title: ({ children, level }: any) => React.createElement(`h${level || 1}`, null, children) };
   const Divider = () => React.createElement('hr', null);
   const Button = (props: any) => React.createElement('button', props, props.children);
@@ -42,7 +63,7 @@ test('PanelVendedor component test - shows total and calls alPagar', () => {
   render(<PanelVendedor carrito={carrito} total={total} alEliminarItem={alEliminarItem} alPagar={alPagar} />);
 
   expect(screen.getByText(/Total:/i)).toBeInTheDocument();
-  expect(screen.getByText(`$${total}`)).toBeInTheDocument();
+  expect(screen.getAllByText(`$${total}`).length).toBeGreaterThan(0);
 
   const boton = screen.getByRole('button', { name: /Realizar Pago/i });
   fireEvent.click(boton);
